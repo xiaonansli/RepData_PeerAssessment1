@@ -32,7 +32,7 @@ hist(total_steps_bydate)
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
-Figure 1  Total number of stepstaken each day. 
+Figure 1.  Total number of steps taken per day. 
 
 ###3.Calculate and report the mean and median of the total number of steps taken per day###
 
@@ -45,6 +45,8 @@ summary(total_steps_bydate)
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##       0    6778   10400    9354   12810   21190
 ```
+The mean and the median of the total number of steps taken per day are 9354 and 10400 respectively.
+
 ##Analysis the daily activity pattern##
 ### 1.Calculate averaged step for every 5-minute interval across all days. ###
 First, we rearrange the data file by interval ascending using dplyr package. Then we summary the data file with group of interval value
@@ -103,7 +105,7 @@ plot.ts(ave_steps_byint1, xlab="Interval",ylab="Number_of_steps",type="l")
 
 ![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
 
-Figure 2  The averaged step for every 5-minute interval across all days. The x-axis is the number of the 5-minute interval, and the y-axis is the average number of steps taken in each interval and averaged across all 61 days.
+Figure 2.  The averaged step for every 5-minute interval across all days. The x-axis is the number of the 5-minute interval, and the y-axis is the average number of steps taken in each interval and averaged across all 61 days.
 
 ### 2.Which 5-minute interval contains the maximum number of steps? ###
  
@@ -134,7 +136,7 @@ ste_max
 ##      155 
 ## 68.31148
 ```
-And the maximum step happened on the interval of 1:55:00~2:00:00.
+And the maximum step happened on the 1:55:00~2:00:00 this 5-minute interval.
 
 ##Imputint missing values##
 ### 1.Calculate and report the total number of missing values in the dataset.###
@@ -159,7 +161,8 @@ number_na
 In the column 1 of this data table, there is about 13.11% of missing values (NAs). The total number of NA is 2304.
 
 ###2.Filling in all of the missing values in the dataset by the mean for that 5-minute interval.###
-First, we add an index to the dataframe
+
+In this section,I will use average steps in each 5-minute interval to replace the NA's. First, I'll add an index to the dataframe
 
 
 ```r
@@ -167,7 +170,7 @@ rname <-rownames(ave_steps_byint)
 sum_df<-data.frame(sum_byint,row.names=c(1:288))
 ave_byint <-data.frame(cbind(sum_df/61,rname))
 ```
-Second, we do a "for loop" to replace NA's by the average value for that 5-minute interval.
+Second, I'll do a "for loop" to replace NA's by the average value for that 5-minute interval.
 
 ```r
 n <-1:17568
@@ -185,6 +188,8 @@ for (i in 1:length(n))
     }
   }
 ```
+Now, I have a dataset "act_byinterval"" that with all the NA's been replaced by corresponding average step numbers.
+
 ###3. Create a new dataset that is equal to the original dataset but with the missing data filled in.###
 
 
@@ -217,9 +222,9 @@ hist(newtotal_steps_bydate)
 
 ![](PA1_template_files/figure-html/unnamed-chunk-16-1.png) 
 
-Figure 3  Total number of steps taken each day with all the NA's have been replaced. 
+Figure 3.  Total number of steps taken each day with all the NA's have been replaced. 
 
-By calculated the mean and median total number of steps taken per day. 
+By calculated the mean and median of the total number of steps taken per day. 
 
 ```r
 summary(newtotal_steps_bydate)
@@ -243,6 +248,7 @@ The min., 1st Qu. values and even mean have been impacted by imputing missing da
 
 ##Calculate activity patterns between weekdays and weekends.##
 ###1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.###
+
 First, add a column to the dataset, which with the filled-in missing values, that indicate the week days
 
 ```r
@@ -257,7 +263,7 @@ weekend_activity <-filter(w_activity,wdays=="Saturday"|wdays=="Sunday")
 
 wday_activity <-filter(w_activity,wdays=="Monday"|wdays=="Tuesday"|wdays=="Wednesday"|wdays=="Thursday"|wdays=="Friday")
 ```
-Calculate the total number of steps in each 5-minute interval for weekend and weekday respectivily.
+Calculate the total number of steps in each 5-minute interval for weekend and weekday respectively.
 
 ```r
 sum_byint_weekend <-with(weekend_activity,tapply(weekend_activity[,1],weekend_activity[,3],sum, na.rm=TRUE))
@@ -296,7 +302,7 @@ xyplot(Number_of_steps~interval|wday,wst_ave_byint1, type="l", layout=c(1,2))
 
 ![](PA1_template_files/figure-html/unnamed-chunk-23-1.png) 
 
-Figure 4 The averaged step for every 5-minute interval averaged across all weekday days and weekend days (y-axis). The x-axis is the number of the 5-minute interval.
+Figure 4. The averaged step for every 5-minute interval averaged across all weekday days and weekend days (y-axis). The x-axis is the time in minute.
 
 
 
